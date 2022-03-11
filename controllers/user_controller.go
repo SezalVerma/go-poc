@@ -56,7 +56,14 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	json.NewEncoder(w).Encode(users) // encode similar to serialize process.
+	if len(users) >0 {
+        w.Write([]byte( strconv.Itoa(len(users)) + " Users Found \n" )) 
+		json.NewEncoder(w).Encode(users) // encode similar to serialize process.
+	} else {
+	   w.Write([]byte("No User Found \n"))
+	}
+
+	
 }
 
 func GetUserById(w http.ResponseWriter, r *http.Request) {
@@ -75,11 +82,16 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	err := user_collection.FindOne(context.TODO(), filter).Decode(&user)
 
 	if err != nil {
-		configs.GetError(err, w)
-		return
-	}
+		// configs.GetError(err, w)
+		w.Write([]byte("No user found with this Id \n"))
+		// return
+	}else{
+        w.Write([]byte("User Found \n"))
 
-	json.NewEncoder(w).Encode(user)
+	    json.NewEncoder(w).Encode(user)
+	}
+     
+	
 }
 
 func GetUserByAadhar(w http.ResponseWriter , r *http.Request){
@@ -95,11 +107,15 @@ func GetUserByAadhar(w http.ResponseWriter , r *http.Request){
 	err := user_collection.FindOne(context.TODO(),filter).Decode(&user)
 
 	if err != nil {
-		configs.GetError(err, w)
-		return
+		// configs.GetError(err, w)
+		w.Write([]byte("No user found with given Aadhar Number \n"))
+		// return
+	}else{
+		w.Write([]byte("User found  \n"))
+        json.NewEncoder(w).Encode(user)
 	}
 
-	json.NewEncoder(w).Encode(user)
+	
 }
 
 func GetUserByPan(w http.ResponseWriter , r *http.Request){
@@ -115,11 +131,15 @@ func GetUserByPan(w http.ResponseWriter , r *http.Request){
 	err := user_collection.FindOne(context.TODO(),filter).Decode(&user)
 
 	if err != nil {
-		configs.GetError(err, w)
-		return
+		// configs.GetError(err, w)
+		w.Write([]byte("No user found with given Pan Number \n"))
+		// return
+	}else{
+		w.Write([]byte("User found  \n"))
+		json.NewEncoder(w).Encode(user)
 	}
 
-	json.NewEncoder(w).Encode(user)
+	
 }
 
 func GetUserByPhone(w http.ResponseWriter , r *http.Request){
@@ -137,31 +157,47 @@ func GetUserByPhone(w http.ResponseWriter , r *http.Request){
 	err := user_collection.FindOne(context.TODO(), filter).Decode(&user)
    
 	if err!= nil{
-		configs.GetError(err, w)
-		return
+		// configs.GetError(err, w)
+		// return
+		w.Write([]byte("No user registered with this Phone Number" + strconv.Itoa(phone) + "\n "))
+	}else{
+		w.Write([]byte("User Found \n"))
+        json.NewEncoder(w).Encode(user)
 	}
 
-	json.NewEncoder(w).Encode(user)
+	
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("entered")
 	w.Header().Set("Content-Type", "application/json")
 
 	var user models.User
+    
+	fmt.Println("before")
 
 	// we decode our body request params
 	_ = json.NewDecoder(r.Body).Decode(&user)
 
 	// 
-
+    fmt.Println("after")
 
 	// insert our book model.
 	result, err := user_collection.InsertOne(context.TODO(), user)
 
+    fmt.Print("here")
+
 	if err != nil {
+		fmt.Print("in err")
 		configs.GetError(err, w)
-		return
+		w.Write([]byte("User could not be created"))
+		// return
+	}else{
+		w.Write([]byte("User created successfully !!"))
+		
+}
+fmt.Print("out here")
+          json.NewEncoder(w).Encode(result)
 	}
 
-	json.NewEncoder(w).Encode(result)
-}
+	

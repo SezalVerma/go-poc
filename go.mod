@@ -4,6 +4,8 @@ go 1.17
 
 require go.mongodb.org/mongo-driver v1.8.3
 
+// require github.com/dustin/go-humanize v1.0.0
+
 require (
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/snappy v0.0.1 // indirect

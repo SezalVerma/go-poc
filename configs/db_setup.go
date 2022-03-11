@@ -56,4 +56,6 @@ func GetError(err error, w http.ResponseWriter) {
 
 	w.WriteHeader(response.StatusCode)
 	w.Write(message)
+	fmt.Println("geterror entered")
+	// return
 }

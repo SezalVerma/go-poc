@@ -7,10 +7,12 @@ import (
 // -----------------   User Model
 type User struct{
 	Id primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
-	Name string `json:"name" validate:"required" bson:"name"`
+	Name string `json:"name"  bson:"name"`
 	Gender string `json:"gender,omitempty" bson:"gender,omitempty"`
-	Address string `json:"address,omitempty" validate:"required" bson:"address,omitempty"`
-	Phone int `json:"phone" validate:"required" bson:"phone"`
-	Aadhar int `json:"aadhar" validate:"required" bson:"aadhar"`
+	Address string `json:"address,omitempty"  bson:"address,omitempty"`
+	Phone int `json:"phone"  bson:"phone"`
+	Aadhar int `json:"aadhar"  bson:"aadhar"`
 	PanNumber string `json:"pan" bson:"pan"`
 }
+
+// validate:"required"
