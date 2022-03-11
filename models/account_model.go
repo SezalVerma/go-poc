@@ -10,6 +10,5 @@ type Account struct{
 	AccountType string `json:"type" validate:"required" bson:"type"`
 	Balance int `json:"balance" bson:"balance"`
 	Currency string `json:"currency" bson:"currency"`
-    AccountUser User `json:"user" bson:"user"`
 	Aadhar int `json:"aadhar" validate:"required" bson:"aadhar"`
 }
