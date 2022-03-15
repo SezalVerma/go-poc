@@ -159,7 +159,5 @@ func GetAccountById(w http.ResponseWriter, r *http.Request) {
 	}else{
 		w.Write([]byte("Account found for Id : " + params["id"] + "\n" ))
         json.NewEncoder(w).Encode(account)
-	}
-
-	
+	}	
 }
