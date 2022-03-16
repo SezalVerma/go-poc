@@ -220,3 +220,43 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 fmt.Print("out here")
           json.NewEncoder(w).Encode(result)
 	} */
+
+	func UpdateUser(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+	
+		var params = mux.Vars(r)
+	
+		//Get id from parameters
+		id, _ := primitive.ObjectIDFromHex(params["id"])
+	
+		var user models.User
+		
+		// Create filter
+		filter := bson.M{"_id": id}
+	
+		// Read update model from body request
+		_ = json.NewDecoder(r.Body).Decode(&user)
+	
+		// prepare update model.
+		update := bson.D{
+			{"$set", bson.D{
+				{"name", user.Name},
+				{"gender", user.Gender},
+				{"address", user.Address},
+				{"phone", user.Phone},
+				{"aadhar",user.Aadhar},
+				{"pan",user.PanNumber},
+			}},
+		}
+	
+		err := user_collection.FindOneAndUpdate(context.TODO(), filter, update).Decode(&user)
+	
+		if err != nil {
+			configs.GetError(err, w)
+			return
+		}
+	
+		user.Id = id
+	
+		json.NewEncoder(w).Encode(user)
+	}

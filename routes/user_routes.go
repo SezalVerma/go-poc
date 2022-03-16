@@ -13,6 +13,7 @@ func UserRoute(router *mux.Router) {
 
 	router.HandleFunc("/api/users" , controllers.GetAllUsers).Methods("GET")
 	router.HandleFunc("/api/users/{id}" , controllers.GetUserById).Methods("GET")
+	router.HandleFunc("/api/users/{id}",controllers.UpdateUser).Methods("PUT")
 	router.HandleFunc("/api/users/aadhar/{aadhar}", controllers.GetUserByAadhar).Methods("GET")
 	router.HandleFunc("/api/users/phone/{phone}",controllers.GetUserByPhone).Methods("GET")
 	router.HandleFunc("/api/users/pan/{pan}",controllers.GetUserByPan).Methods("GET")
