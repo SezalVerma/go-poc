@@ -161,3 +161,41 @@ func GetAccountById(w http.ResponseWriter, r *http.Request) {
         json.NewEncoder(w).Encode(account)
 	}	
 }
+
+
+
+func UpdateAccount(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	var params = mux.Vars(r)
+
+	//Get id from parameters
+	id, _ := primitive.ObjectIDFromHex(params["id"])
+
+	var account models.Account
+	
+	// Create filter
+	filter := bson.M{"_id": id}
+
+	// Read update model from body request
+	_ = json.NewDecoder(r.Body).Decode(&account)
+
+	// prepare update model.
+	update := bson.D{
+		{"$set", bson.D{
+			{"balance", account.Balance},
+			{"aadhar",account.Aadhar},			
+		}},
+	}
+
+	_,err := user_collection.UpdateOne(context.TODO(), filter, update)
+
+	if err != nil {
+		configs.GetError(err, w)
+		return
+	}
+
+	account.Id = id
+
+	json.NewEncoder(w).Encode(account)
+}

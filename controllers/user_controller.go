@@ -249,7 +249,7 @@ fmt.Print("out here")
 			}},
 		}
 	
-		err := user_collection.FindOneAndUpdate(context.TODO(), filter, update).Decode(&user)
+		_,err := user_collection.UpdateOne(context.TODO(), filter, update)
 	
 		if err != nil {
 			configs.GetError(err, w)
@@ -257,6 +257,6 @@ fmt.Print("out here")
 		}
 	
 		user.Id = id
-	
+	  
 		json.NewEncoder(w).Encode(user)
 	}
